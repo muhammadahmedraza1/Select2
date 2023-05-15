@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>Using Select2</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+  </head>
+  <body>
+      <div class="container ">
+        <div class="col-md-6">
+          <label>Single Select2</label>
+          <select id="single" class="js-states form-control">
+          </select>
+        </div>
+
+      </div>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+
+      $(document).ready(function(){
+         //fillDropDown('https://workflowuat.cclpharma.online/WorkflowUATApi/api/Admin/GetStepCodeByWFCode/NPD')
+         fillDropDown('https://workflowuat.cclpharma.online/WorkflowUATApi/api/Workflow/GetWFCode')
+      });
+      $("#single").select2({
+          placeholder: "Select a programming language",
+          allowClear: true
+      });
+     
+      function fillDropDown(url){
+        $.ajax({
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            url:url,
+            success: function (response)
+            {
+           
+              $.each( response.data, function(i,value ) { 
+                  //console.log(value);
+                    var text = Object.values(value).join(', ');
+                    var option = $('<option>', { value: text.split(',')[0], text: text.split(',')[1] });
+                    $("#single").append(option);
+              });  
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            cache: false,
+            async: false,
+        });
+      }
+
+    </script>
+  </body>
+</html>
